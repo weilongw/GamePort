@@ -1,0 +1,9 @@
+<li>
+  <%= game.name %>
+  <% if current_user.admin? %>
+      <%= link_to "delete", game, method: :delete,
+                  data: {confirm: "Delete this game"}%>
+  <% end %>
+  <br/><%= game.category %><br/>
+  <%= game.description %>
+</li>

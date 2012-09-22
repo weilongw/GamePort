@@ -1,0 +1,21 @@
+<% provide(:title, 'Create a new game') %>
+<h1><i>My Precious...</i></h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@game) do |f| %>
+
+        <%= render 'shared/error_messages', object: f.object %>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+
+        <%= f.label :category %>
+        <%= f.text_field :category, placeholder: "game/movie/comic/..." %>
+
+        <%= f.label :description %>
+        <%= f.text_area :description, placeholder: "Tell us more about your game...", rows: "15" %>
+
+        <%= f.submit "Construction complete!", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>
