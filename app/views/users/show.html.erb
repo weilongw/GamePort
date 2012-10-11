@@ -1,5 +1,5 @@
 <% provide(:title, @user.name) %>
-<div class="row">
+<div class="row" xmlns="http://www.w3.org/1999/html">
   <aside class="span4">
     <section>
       <h1>
@@ -11,9 +11,45 @@
     <section>
       <%= render 'shared/stats' %>
     </section>
+    <% if current_user?(@user) %>
+    <section>
+      <big>Games:</big><br/>
+
+      <div class="user_avatars">
+        <% @user.games.each do |game| %>
+            <p>
+            <%= link_to game.name, game_path(game) %><br>
+            <% game.users.each do |user| %>
+                <% if user.id != current_user.id %>
+                    <span><%= link_to gravatar_for(user, 50), user %></span>
+                <% end %>
+            <% end %>
+            <br style="clear:both;"/>
+            </p>
+
+        <% end %>
+      </div>
+
+
+
+    </section>
+    <% end %>
+
   </aside>
   <div class="span8">
     <%= render 'follow_form' if signed_in? %>
+
+    <section>
+      <p><h3 style="text-align: left;"> What's new?<br/><hr/></h3></p>
+      <% @posts.each do |post|%>
+          <big><%= post.comment %></big> <br><br/>
+          <span style="text-align: right;">
+            <i>In</i> <%= link_to post.game.name, game_path(post.game) %>
+            <i>By</i> <%= link_to post.user.name, user_path(post.user) %><br/>
+            @<%= post.created_at %></span>
+          <hr/>
+      <% end %>
+    </section>
 
   </div>
 </div>

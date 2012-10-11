@@ -17,6 +17,12 @@ class User < ActiveRecord::Base
                                     dependent: :destroy
   has_many :followers, through: :reverse_user_relations, source: :follower
 
+  has_many :user_game_relations, dependent: :destroy
+  has_many :games, through: :user_game_relations
+
+  has_many :posts
+  has_many :feeds
+
   def following?(other_user)
     user_relations.find_by_followed_id(other_user.id)
   end
@@ -27,6 +33,14 @@ class User < ActiveRecord::Base
 
   def unfollow!(other_user)
     user_relations.find_by_followed_id(other_user.id).destroy
+  end
+
+  def like?(game)
+    user_game_relations.find_by_game_id(game.id)
+  end
+
+  def like!(game)
+    UserGameRelation.create!(user_id: current_user.id, game_id: game.id)
   end
 
   private

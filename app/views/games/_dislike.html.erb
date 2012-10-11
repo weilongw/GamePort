@@ -1,0 +1,5 @@
+<%= form_for(current_user.user_game_relations.find_by_game_id(@game),
+             html: { method: :delete }, remote: true) do |f| %>
+    <%= f.hidden_field :game_id %>
+    <%= f.submit "Dislike", class: "btn btn-large" %>
+<% end %>

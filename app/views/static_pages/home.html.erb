@@ -1,12 +1,58 @@
-<div class="center hero-unit">
-  <h1>Welcome to my Game Portal</h1>
+<% if signed_in? %>
+<% provide(:title, @user.name) %>
+<div class="row" xmlns="http://www.w3.org/1999/html">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= gravatar_for @user,100 %>
+      </h1>
+      <strong><big><%= @user.name %></big></strong>
 
-  <h2>
+    </section>
+    <section>
+      <%= render 'shared/stats' %>
+    </section>
+    <section>
+      <%= form_for(@feed) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+          <%= f.label 'How are you feeling today?' %>
+          <%= f.text_area :comment, placeholder: "I am feeling great!", rows: "5" %>
 
-    <a href="/games">Check out what's happening on the playground.</a>
-  </h2>
+          <input type="hidden" name="feed[user_id]" value=<%=current_user.id%> >
 
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+          <%= f.submit "Post!", class: "btn btn-large btn-primary" %>
+      <% end %>
+    </section>
+
+  </aside>
+  <div class="span8">
+
+    <section>
+      <p><h3 style="text-align: left;"> My feeds <br/><hr/></h3></p>
+      <% @feeds.each do |feed|%>
+          <big><%= feed.comment %></big> <br><br/>
+          <span style="text-align: right;">
+
+            <i>By</i> <%= link_to feed.user.name, user_path(feed.user) %><br/>
+            @<%= feed.created_at %></span>
+          <hr/>
+      <% end %>
+    </section>
+
+  </div>
 </div>
+<% else %>
+    <div class="center hero-unit">
+      <h1>Welcome to My Game Portal</h1>
 
-<%= link_to image_tag("rails.png", alt: "Rails"), 'http://dota.sgamer.com' %>
+      <h2>
+        Checkout what's happening on the
+        <%= link_to "playgrounds", games_path%>
+        !
+      </h2>
+
+      <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+    </div>
+
+    <%= link_to image_tag("rage.png", alt: "Smile"), root_path %>
+<% end %>

@@ -6,8 +6,16 @@ GamePort::Application.routes.draw do
     end
   end
   resources :sessions, only: [:new, :create, :destroy]
-  resources :games
+
   resources :user_relations, only: [:create, :destroy]
+
+  resources :user_game_relations, only: [:create, :destroy]
+
+  resources :posts, only: [:create]
+
+  resources :feeds, only: [:create]
+
+  resources :games
 
   root to: 'static_pages#home'
 

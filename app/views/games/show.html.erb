@@ -1,0 +1,70 @@
+<div class="row" xmlns="http://www.w3.org/1999/html">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= @game.name %>
+      </h1>
+      <p>
+      <%= render 'like_form' if signed_in? %>
+      </p>
+
+    </section>
+    <section>
+      <h3>
+        <%= @game.category %>
+      </h3>
+      <p>
+        <%= @game.description %>
+      </p>
+    </section>
+    <section>
+      <% if @users.any? %>
+          People who also likes this game: <br/>
+          <div class="user_avatars">
+            <% @users.each do |user| %>
+                <% if !current_user.nil? %>
+                    <% if user.id != current_user.id %>
+                        <%= link_to gravatar_for(user, 50), user %>
+                    <% end %>
+                <% else %>
+                    <%= link_to gravatar_for(user, 50), user %>
+                <% end %>
+            <% end %>
+          </div>
+      <% end %>
+      <p>
+
+      </p>
+    </section>
+
+  </aside>
+  <div class="span8">
+    <% if !current_user.nil? %>
+
+    <section>
+      <%= form_for(@post) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+          <%= f.label 'Post a note for this game:' %>
+          <%= f.text_area :comment, placeholder: "I wonder what do you think of me...", rows: "5" %>
+
+          <input type="hidden" name="post[user_id]" value=<%=current_user.id%> >
+          <input type="hidden" name="post[game_id]" value=<%=@game.id%> >
+
+          <%= f.submit "Post!", class: "btn btn-large btn-primary" %>
+      <% end %>
+    </section>
+    <br><br>
+    <% end %>
+    <hr/>
+    <section>
+      <% @posts.each do |post|%>
+        <big><%= post.comment %></big> <br><br/>
+        <span style="text-align: right;"><i>By </i><%= link_to post.user.name, user_path(post.user) %><br>
+          @<%= post.created_at %></span>
+        <hr/>
+      <% end %>
+    </section>
+
+  </div>
+</div>
+

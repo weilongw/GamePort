@@ -21,6 +21,13 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @posts = []
+    @user.games.each do |game|
+      game.posts.each do |post|
+        @posts.append post
+      end
+    end
+    @posts.sort! {|a,b| b.created_at <=> a.created_at}
   end
 
   def index

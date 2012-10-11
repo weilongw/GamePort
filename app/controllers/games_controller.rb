@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 class GamesController < ApplicationController
   before_filter :signed_in_user, only: [:new, :create, :destroy]
 
@@ -17,6 +18,13 @@ class GamesController < ApplicationController
 
   def index
     @games = Game.all.paginate(page: params[:page])
+  end
+
+  def show
+    @game = Game.find(params[:id])
+    @users = @game.users
+    @post = Post.new
+    @posts = @game.posts
   end
 
   def destroy
